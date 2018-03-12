@@ -1,0 +1,654 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>3.3.1. Mitigating Bots using a DOS profile &#8212; Introduction to Application Security Manager  documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/css/f5_agility_theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/css/f5.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="3.3. Module – Mitigating L&amp; DDoS Attacks" href="module3.html" />
+<!--
+# Copyright 2017 F5 Networks
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+-->
+<link href="https://cdn.f5.com/favicon.ico" rel="icon">
+<script src="https://use.fontawesome.com/21fb8a09c3.js"></script>
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+  </head>
+  <body>
+  <nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="row corp-header">
+      <div class="container corp-header">
+        <div class="container corp-menu">
+          <ul>
+            <li><a href="https://f5.com" class="internalLink">F5.com</a></li>
+            <li><a href="https://support.f5.com">Support</a></li>
+            <li><a href="https://devcentral.f5.com">Community</a></li>
+            <li><a href="https://github.com/F5Networks">GitHub</a></li>
+            <li><a href="https://f5.com/about-us/careers">Careers</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="row pageHeader">
+      <div class="container stat">
+        <div class="col-xs-12 stat">
+          <a class="internalLink" href="https://f5.com">
+            <img class="logo" src="https://cdn.f5.com/websites/support/assets/images/logo.svg" width="50" height="44" alt="F5 Networks" title="F5 Networks" border="0">
+          </a>
+            <ul id="MainMenu" class="main-menu">
+              <li>
+                <a href="#">Products
+                  <span class="indicator"><span class="arrow-up"></span></span>
+                </a>
+
+                <div class="menu-panel soft-hide" id="ProductsSubmenu">
+                  <div class="container">
+                    <ul class="submenu col-sm-11">
+                      <li class="third"><span class="a-mm-h">Connectors</span>
+                        <ul>
+                          <li><a href="http://clouddocs.f5.com/products/connectors/marathon-bigip-ctlr/latest" data-link-type="Nav: Mega">F5 Marathon BIG-IP Controller</a></li>
+                          <li><a href="http://clouddocs.f5.com/products/connectors/marathon-asp-ctlr/latest" data-link-type="Nav: Mega">F5 Marathon ASP Controller</a></li>
+                          <li><a href="http://clouddocs.f5.com/products/connectors/k8s-bigip-ctlr/latest" data-link-type="Nav: Mega">F5 Kubernetes BIG-IP Controller</a></li>
+                          <li><a href="http://clouddocs.f5.com/products/connectors/f5-kube-proxy/latest" data-link-type="Nav: Mega">F5 Kubernetes Proxy</a></li>
+                        </ul>
+                        <!--span class="seemore"><a data-link-type="Nav: Mega" href="/products/connectors">See all </a></--span-->
+                      </li>
+                      <li class="divider"></li>
+                      <li class="third"><span class="a-mm-h">Application Service Proxy</span>
+                        <ul>
+                          <li><a href="http://clouddocs.f5.com/products/asp/latest" data-link-type="Nav: Mega">F5 Application Service Proxy</a></li>
+                        </ul>
+                        <!--span class="seemore"><a href="/products/">See all </a></span-->
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <a href="#">Container Integrations
+                  <span class="indicator"><span class="arrow-up"></span></span>
+                </a>
+
+                <div class="menu-panel soft-hide" id="ContainersSubmenu">
+                  <div class="container">
+                    <ul class="submenu col-sm-11">
+                      <li class="third"><span class="a-mm-h">Container Integrations</span>
+                        <ul>
+                          <li><a href="http://clouddocs.f5.com/containers/latest/marathon/" data-link-type="Nav: Mega">Mesos Marathon</a></li>
+                          <li><a href="http://clouddocs.f5.com/containers/latest/kubernetes/" data-link-type="Nav: Mega">Kubernetes</a></li>
+                          <li><a href="http://clouddocs.f5.com/containers/latest/openshift/" data-link-type="Nav: Mega">RedHat OpenShift</a></li>
+                        </ul>
+                        <span class="seemore"><a data-link-type="Nav: Mega" href="http://clouddocs.f5.com/containers/latest">View details </a></span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <a href="#">Clouds
+                  <span class="indicator"><span class="arrow-up"></span></span>
+                </a>
+
+                <div class="menu-panel soft-hide" id="CloudsSubmenu">
+                  <div class="container">
+                    <ul class="submenu col-sm-11">
+                      <li class="third"><span class="a-mm-h">Cloud Integrations</span>
+                        <ul>
+                          <li><a href="http://clouddocs.f5.com/cloud/openstack/" data-link-type="Nav: Mega">OpenStack</a></li>
+                        </ul>
+                        <!--span class="seemore"><a data-link-type="Nav: Mega" href="/cloud/">See all </a></span-->
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <a href="#">Resources
+                  <span class="indicator"><span class="arrow-up"></span></span>
+                </a>
+                <div class="menu-panel soft-hide" id="UPCProgramSubmenu">
+                  <div class="container">
+                    <ul class="submenu col-sm-11">
+                      <li class="third">
+                        <span class="a-mm-h">Downloads</span>
+                        <ul>
+                          <li><a target="_blank" data-link-type="Nav: Mega" href="https://hub.docker.com/r/f5networks/" class="internalLink">Docker Hub</a></li>
+                          <li><a target="_blank" data-link-type="Nav: Mega" href="https://store.docker.com/images/f5networks" class="internalLink">Docker Store</a></li>
+                        </ul>
+                      </li>
+                      <li class="divider"></li>
+
+                      <li class="third">
+                        <span class="a-mm-h">OpenSource</span>
+                        <ul>
+                          <li><a target="_blank" data-link-type="Nav: Mega" href="https://github.com/F5Networks" class="internalLink">GitHub</a></li>
+                        </ul>
+                      </li>
+                      <li class="divider"></li>
+
+                      <li class="third">
+                        <a href="//university.f5.com" class="a-mm-h internalLink" target="_blank" data-link-type="Nav: Mega">F5 University</a>
+                        <ul>
+                          <li>
+                            <p>Get up to speed with free self-paced courses</p>
+                          </li>
+                        </ul>
+                        <a data-ng-href="https://devcentral.f5.com" class="a-mm-h internalLink" target="_blank" data-link-type="Nav: Mega" href="https://devcentral.f5.com">DevCentral</a>
+                        <ul>
+                          <li>
+                            <p>Join the community of 250,000+ technical peers</p>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+            </ul>
+        </div>
+      </div>
+    </div>
+  </div> <!-- /container-fluid -->
+</nav>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-3 col-md-3 sidebar">
+         <h4><a href="../../">Introduction to Application Security Manager </a></h4>
+<div id="searchbox" style="display: none" role="search">
+  <form class="search" action="../../search.html" method="get">
+    <div>
+      <input type="text" name="q" placeholder="Search" style="padding-left: 6px;"/>
+      <!-- <input type="submit" value="Go" style="margin-top: 4px;"/> -->
+      <button type="submit" class="btn btn-primary btn-xs">Go</button>
+    </div>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+  <p class="caption">
+   <span class="caption-text">Current Page</span>
+  </p>
+  <ul>
+<li><a class="reference internal" href="#">3.3.1. Mitigating Bots using a DOS profile</a><ul>
+<li><a class="reference internal" href="#objective">3.3.1.1. Objective:</a></li>
+<li><a class="reference internal" href="#initiate-a-bot-attack">3.3.1.2. Initiate a bot attack</a></li>
+<li><a class="reference internal" href="#creating-a-dos-profile">3.3.1.3. Creating a DoS Profile</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#tps-based-detection">3.3.2. TPS-based Detection</a><ul>
+<li><a class="reference internal" href="#mitigating-dos-attacks-usingtps-based-detection">3.3.2.1. Mitigating DoS attacks usingTPS-based Detection</a></li>
+<li><a class="reference internal" href="#id1">3.3.2.2. Objective:</a></li>
+</ul>
+</li>
+</ul>
+
+
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">1. Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#accessing-the-ravello-lab-environment">2. Accessing the Ravello lab environment</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../class1.html">3. Class - Introduction to Application Security Manager</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../module1/module1.html">3.1. ASM Policy Creation and Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../module2/module2.html">3.2. Policy Building and Staging</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="module3.html">3.3. Module –  Mitigating L&amp; DDoS Attacks</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="module3.html"
+                        title="previous chapter">3.3. Module –  Mitigating L&amp; DDoS Attacks</a></p>
+        
+      </div>
+      <div class="col-md-offset-3 col-sm-offset-3 main">
+        <h4>
+          <a href="/">Community Training Classes &amp; Labs</a> &gt; <a href="../../index.html">Introduction to Application Security Manager</a>
+          <span class="right"><a href="../../genindex.html">Index</a></span>
+        </h4>
+        
+  <div class="section" id="mitigating-bots-using-a-dos-profile">
+<h1>3.3.1. Mitigating Bots using a DOS profile<a class="headerlink" href="#mitigating-bots-using-a-dos-profile" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="objective">
+<h2>3.3.1.1. Objective:<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Scan the web site using a spider (OWASP ZAP)</li>
+<li>Create a Denial of Service Profile</li>
+<li>Enable the Proactive Bot Defense</li>
+<li>Associate the DoS profile with an existing virtual server</li>
+<li>Estimated time for completion: <strong>15 minutes</strong></li>
+</ul>
+</div>
+<div class="section" id="initiate-a-bot-attack">
+<h2>3.3.1.2. Initiate a bot attack<a class="headerlink" href="#initiate-a-bot-attack" title="Permalink to this headline">¶</a></h2>
+<p>You are now going to use the OWASP ZAP tool to run a spider bot attack
+against the Hackazon website.</p>
+<ol class="arabic simple">
+<li>From the <strong>Applications Menu</strong> in the upper left-hand corner of the
+jumpbox go to <strong>OWASP &gt; Proxies &gt; ZAP</strong>.</li>
+<li>Once ZAP is open, click on <strong>Start</strong> when asked <strong>Do you want to
+persist the ZAP session</strong>.</li>
+<li>In the <strong>Quick Start</strong> tab, in the <strong>URL Attack</strong> box, enter
+<a class="reference external" href="http://hackazon.f5demo.com">http://hackazon.f5demo.com</a> and hit the <strong>Attack</strong> button<strong>.</strong></li>
+</ol>
+<img alt="../../_images/image35.png" src="../../_images/image35.png" />
+<ol class="arabic simple">
+<li>Once the attack has started a <strong>Spider</strong> tab should appear in the
+bottom ZAP window. You will see ZAP crawling the web site. Stop the
+attack after you have observed this.</li>
+</ol>
+<img alt="../../_images/image36.png" src="../../_images/image36.png" />
+</div>
+<div class="section" id="creating-a-dos-profile">
+<h2>3.3.1.3. Creating a DoS Profile<a class="headerlink" href="#creating-a-dos-profile" title="Permalink to this headline">¶</a></h2>
+<p>Now you will create a DoS profile to prevent malicious bots from
+attacking the Hackazon web site.</p>
+<ol class="arabic simple">
+<li>Create a DoS profile using the information in the following table.
+These will create a base profile you can then modify.</li>
+</ol>
+<table border="1" class="docutils">
+<colgroup>
+<col width="59%" />
+<col width="17%" />
+<col width="24%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><strong>Configuration utility</strong></th>
+<th class="head" colspan="2">&#160;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>Security &gt; DoS Protection : DoS Profiles,</strong> then click <strong>Create</strong></td>
+<td colspan="2">&#160;</td>
+</tr>
+<tr class="row-odd"><td>Configuration section</td>
+<td colspan="2">&#160;</td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>Profile Name</td>
+<td><strong>Agility_DoS_Profile</strong></td>
+</tr>
+<tr class="row-odd"><td>&#160;</td>
+<td>Partition / Path</td>
+<td><strong>Common</strong></td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>When finished, click</td>
+<td><strong>Finished</strong></td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple">
+<li>Modify the properties of the DoS Profile by opening the new DoS
+Profile and customize the profile using the information in the table
+below.</li>
+</ol>
+<img alt="../../_images/image37.png" src="../../_images/image37.png" />
+<ol class="arabic simple">
+<li>Assign the DoS Profile to a virtual server.</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">An Application Security Policy is NOT required to apply a L7 DDoS profile.</p>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="59%" />
+<col width="19%" />
+<col width="21%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><strong>Configuration utility</strong></th>
+<th class="head" colspan="2">&#160;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>Local Traffic &gt; Virtual Servers &gt; Virtual Server list: vs_auction_http</strong></td>
+<td colspan="2">&#160;</td>
+</tr>
+<tr class="row-odd"><td>Security &gt; Policies tab</td>
+<td colspan="2">&#160;</td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>Dos Protection profile</td>
+<td><strong>Agility_DoS_Profile</strong></td>
+</tr>
+<tr class="row-odd"><td>When finished, click</td>
+<td><strong>Update</strong></td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
+<img alt="../../_images/image38.png" src="../../_images/image38.png" />
+<ol class="arabic simple">
+<li>Using the OWASP ZAP tool, attack the website again. Notice this time
+the attack was stopped.</li>
+</ol>
+<img alt="../../_images/image39.png" src="../../_images/image39.png" />
+<ol class="arabic simple">
+<li>On you BIG-IP open a new window and go to <strong>Security &gt; Reporting &gt;
+DoS &gt; Application &gt; Transaction Outcomes.</strong> With a few minutes your
+attack should show up.</li>
+</ol>
+<img alt="../../_images/image40.png" src="../../_images/image40.png" />
+</div>
+</div>
+<div class="section" id="tps-based-detection">
+<h1>3.3.2. TPS-based Detection<a class="headerlink" href="#tps-based-detection" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="mitigating-dos-attacks-usingtps-based-detection">
+<h2>3.3.2.1. Mitigating DoS attacks usingTPS-based Detection<a class="headerlink" href="#mitigating-dos-attacks-usingtps-based-detection" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="id1">
+<h2>3.3.2.2. Objective:<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Observe how a Denial of Service attack is blocked using TPS-based
+Detection</li>
+<li>Estimated time for completion: <strong>15 minutes</strong></li>
+</ul>
+<ol class="arabic">
+<li><p class="first">Edit the DoS Profile, set the Operation Mode of Proactive Bot Defense
+to Off, Bot Signatures to Off, and TPS based Detection to Blocking.
+These are deliberately low.</p>
+<p>Note: in this lab exercise, we will disable the Proactive Bot Defense
+and Bot Signatures in order to use our tools to show the TPS
+Detection DOS blocking mechanism in a classroom environment. In a
+real-life scenario, these would be typically enabled (in addition to
+the TPS based or other detection mechanisms) to increase the
+effectiveness of the overall DoS protection.</p>
+</li>
+</ol>
+<table border="1" class="docutils">
+<colgroup>
+<col width="59%" />
+<col width="16%" />
+<col width="25%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><strong>Configuration utility</strong></th>
+<th class="head" colspan="2">&#160;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>Security &gt; DoS Protection &gt; DoS Profiles: Agility_DoS_Profile</strong></td>
+<td colspan="2">&#160;</td>
+</tr>
+<tr class="row-odd"><td>Application Security &gt; Proactive Bot Defense section</td>
+<td colspan="2">&#160;</td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>Operation Mode</td>
+<td><strong>Off</strong></td>
+</tr>
+<tr class="row-odd"><td>Application Security &gt; Bot Signatures</td>
+<td colspan="2">&#160;</td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>Bot Signature Check</td>
+<td><strong>Off</strong></td>
+</tr>
+<tr class="row-odd"><td>Application Security &gt; TPS-based Detection</td>
+<td colspan="2">&#160;</td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>Operation Mode</td>
+<td>Blocking</td>
+</tr>
+<tr class="row-odd"><td>&#160;</td>
+<td>By Source IP</td>
+<td>TPS increased by 100%</td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>By Source IP</td>
+<td>Reached at least 15 TPS</td>
+</tr>
+<tr class="row-odd"><td>&#160;</td>
+<td>TPS reached</td>
+<td>20 TPS</td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>Request Blocking</td>
+<td>Checked, Block All</td>
+</tr>
+<tr class="row-odd"><td>&#160;</td>
+<td>By Geolocation</td>
+<td>No mitigation</td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>By URL</td>
+<td>No mitigation</td>
+</tr>
+<tr class="row-odd"><td>&#160;</td>
+<td>Site Wide</td>
+<td>No mitigation</td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>Prevention Duration</td>
+<td>Escalation Period 120 seconds</td>
+</tr>
+<tr class="row-odd"><td>&#160;</td>
+<td>Prevention Duration</td>
+<td>De-escalation Period 7200 seconds</td>
+</tr>
+<tr class="row-even"><td><strong>Stress-based Detection: Off (Uncheck Request Blocking checkbox if it is checked)</strong></td>
+<td colspan="2">&#160;</td>
+</tr>
+<tr class="row-odd"><td><strong>Heavy URL Protection: Off (Uncheck Request Blocking checkbox if it is checked)</strong></td>
+<td colspan="2">&#160;</td>
+</tr>
+<tr class="row-even"><td><strong>Record Traffic: Off (Uncheck Request Blocking checkbox if it is checked)</strong></td>
+<td colspan="2">&#160;</td>
+</tr>
+<tr class="row-odd"><td>When finished, click</td>
+<td><strong>Update</strong></td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
+<img alt="../../_images/image41.png" src="../../_images/image41.png" />
+<ol class="arabic">
+<li><p class="first">Open a new browser tab/window and go to <strong>Security &gt;&gt; Reporting &gt;&gt;
+DoS &gt;&gt; Overview</strong> and open another tab/window and go to <strong>Security &gt;&gt;
+Reporting &gt;&gt; DoS &gt;&gt; Transaction Outcomes</strong>.</p>
+</li>
+<li><p class="first">With the Overview window to the front use Apache Bench to attempt to
+DoS the Hackazon website. Open a new terminal window and type:</p>
+<p>ab -n 2500 -c 100 -k -r <a class="reference external" href="http://hackazon.f5demo.com/">http://hackazon.f5demo.com/</a></p>
+</li>
+<li><p class="first">You should see an attack notification in the Overview window.</p>
+</li>
+</ol>
+<img alt="../../_images/image42.png" src="../../_images/image42.png" />
+<ol class="arabic simple" start="4">
+<li>You can also observe the attack via the pool statistics. Notice two
+things: in the Pools Statistics (monitor the Current Connections
+counter) show a large number of connections and traffic throughput
+for a few seconds until the Attack is being detected (Attack is shown
+from the second tab showing the Security/Reporting/DOS/Overview). As
+soon as you see the attack (actually slightly prior to that as it
+takes about a second to be reported), from the Pools Statistics you
+will notice traffic tapering off and Connections going to 0 – proof
+that ASM has stopped (blocked) the attack</li>
+<li>As a final step, verify that the DoS Blocking took place, refresh the
+Transaction Outcomes by hitting the <strong>Go</strong> button.</li>
+<li>As a final step, verify that the DoS Blocking took place, refresh the Transaction Outcomes by hitting the Go button.</li>
+<li>Hover your mouse over the most recent spike in TPS and notice that it shows that DoS Blocking took place:</li>
+</ol>
+<img alt="../../_images/image42.png" src="../../_images/image42.png" />
+</div>
+</div>
+
+
+        
+		     <div class="row next-prev-btn-row">
+           <div class="col-lg-12">
+           
+		        <a href="module3.html" title="3.3. Module – Mitigating L&amp; DDoS Attacks" accesskey="p" class="btn btn-primary pull-left"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Previous</a>
+           
+           
+		     </div>
+         </div>
+        
+      </div>
+    </div>
+  </div>
+
+
+  <footer>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="content-fluid pre-footer">
+            <div class="blocks-container">
+              <div class="block">
+                <h3>Support Programs</h3>
+                <p>Regionally located support centers enable F5 to provide support in a number of languages through native-speaking support engineers.</p>
+                <a class="btn internalLink" data-ng-href="https://f5.com/support/support-offerings" target="_blank" href="https://f5.com/support/support-offerings">See more
+                  <span class="icon-1x-right icon-new-window" data-icon="new-window">​</span>
+                </a>
+              </div>
+              <div class="block">
+                <h3>Contact Support</h3>
+                <p>
+                  North America: 1-888-882-7535<br>
+                  Outside North America: 800-11-275-435
+                </p>
+                <a class="btn internalLink" data-ng-href="https://f5.com/about-us/contact#regional-support" target="_blank" href="https://f5.com/about-us/contact#regional-support">Local Support Numbers
+                  <span class="icon-1x-right icon-new-window" data-icon="new-window">​</span>
+                </a>
+              </div>
+              <div class="block">
+                <h3>Feedback and Help</h3>
+                <p>Have questions, suggestions, or just want to get something off your chest? Let us know.</p>
+                <a class="btn" data-ui-sref="siteFeedback" target="_blank" href="https://support.f5.com/csp/siteFeedback">Leave feedback</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="footer">
+            <div class="container">
+              <div class="col-sm-3 col-md-2">
+                <h4>About F5</h4>
+                <ul>
+                  <li><a data-ng-href="https://f5.com/about-us/contact" target="_blank" data-link-type="footer" href="https://f5.com/about-us/contact" class="internalLink">Contact F5</a>
+                  </li>
+                  <li><a data-ng-href="https://f5.com/about-us/careers" target="_blank" data-link-type="footer" href="https://f5.com/about-us/careers" class="internalLink">Careers</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-sm-3 col-md-2">
+                <h4>Education</h4>
+                <ul>
+                  <li><a data-ng-href="https://f5.com/education/training" target="_blank" data-link-type="footer" href="https://f5.com/education/training" class="internalLink">Training</a>
+                  </li>
+                  <li><a data-ng-href="https://f5.com/education/certification" target="_blank" data-link-type="footer" href="https://f5.com/education/certification" class="internalLink">Certification</a>
+                  </li>
+                  <li><a data-ng-href="https://f5.com/education/training/free-courses" target="_blank" data-link-type="footer" href="https://f5.com/education/training/free-courses" class="internalLink">Free Online Training</a>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="col-sm-3 col-md-2">
+                <h4>F5 sites</h4>
+                <ul>
+                <li><a data-ng-href="https://f5.com" target="_blank" data-link-type="footer" href="https://f5.com" class="internalLink">F5.com</a>
+                </li>
+                <li><a data-ng-href="https://devcentral.f5.com" target="_blank" data-link-type="footer" href="https://devcentral.f5.com" class="internalLink">Community</a>
+                </li>
+                <li><a data-ng-href="https://partners.f5.com" target="_blank" data-link-type="footer" href="https://partners.f5.com" class="internalLink">Partners</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="col-sm-3 col-md-2">
+            <h4>Support Tasks</h4>
+            <ul>
+                <li><a data-ui-sref="mySupport.createServiceRequest" data-link-type="footer" href="https://support.f5.com/csp/my-support/service-request">Create Service Request </a>
+                </li>
+                <li><a data-ng-href="https://f5.com/about-us/contact#regional-support" target="_blank" data-link-type="footer" href="https://f5.com/about-us/contact#regional-support" class="internalLink">Contact Support</a>
+                </li>
+                <li><a data-ui-sref="siteFeedback" target="_blank" data-link-type="footer" href="https://support.f5.com/csp/siteFeedback">Leave feedback [+]</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="col-xs-12 col-md-3 right">
+            <h4>Connect with us</h4>
+            <ul class="social_icons">
+                <li><a href="//twitter.com/f5networks" target="_blank" data-name="twitter" data-type="" data-prefix="social" data-utf="E032" title="Twitter" class="externalLink"><i class="icon-1x icon-twitter icon-inverse-circle" data-link-type="footer"></i></a></li>
+                <li><a href="//www.linkedin.com/companies/f5-networks" target="_blank" class="linkedin externalLink" title="LinkedIn"><i class="icon-1x icon-linkedin icon-inverse-circle" data-link-type="footer"></i></a></li>
+                <li><a href="//www.facebook.com/f5networksinc" target="_blank" class="facebook externalLink" title="Facebook"><i class="icon-1x icon-facebook icon-inverse-circle" data-link-type="footer"></i></a></li>
+                <li><a href="//www.youtube.com/f5networksinc" target="_blank" class="youtube externalLink" title="YouTube"><i class="icon-1x icon-youtube icon-inverse-circle" data-link-type="footer"></i></a></li>
+                <li><a data-ng-href="https://devcentral.f5.com" target="_blank" class="devcentral internalLink" title="DevCentral" href="https://devcentral.f5.com"><i class="icon-1x icon-dc-pos icon-inverse-circle" data-link-type="footer"></i></a></li>
+            </ul>
+        </div>
+
+        <div class="content-fluid left">
+            <div class="col-xs-12">
+                <p>
+                    © Copyright <span class="ng-binding">2017</span> by F5 Networks, Inc. |
+                    <a data-ng-href="https://f5.com/about-us/policies" target="_blank" data-link-type="footer" href="https://f5.com/about-us/policies" class="internalLink">Policies</a> |
+                    <a data-ng-href="https://f5.com/about-us/policies/trademarks" target="_blank" data-link-type="footer" href="https://f5.com/about-us/policies/trademarks" class="internalLink">Trademarks</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+</div>
+</footer>
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="../../_static/js/bootstrap.min.js"></script>
+  <script type="text/javascript">
+    jQuery.noConflict(true)
+  </script>
+  </body>
+</html>

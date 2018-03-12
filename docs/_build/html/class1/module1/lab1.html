@@ -1,0 +1,581 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>3.1.1. Initial configuration of the BIG-IP &#8212; Introduction to Application Security Manager  documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/css/f5_agility_theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/css/f5.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3.2. Policy Building and Staging" href="../module2/module2.html" />
+    <link rel="prev" title="3.1. ASM Policy Creation and Logging" href="module1.html" />
+<!--
+# Copyright 2017 F5 Networks
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+-->
+<link href="https://cdn.f5.com/favicon.ico" rel="icon">
+<script src="https://use.fontawesome.com/21fb8a09c3.js"></script>
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+  </head>
+  <body>
+  <nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="row corp-header">
+      <div class="container corp-header">
+        <div class="container corp-menu">
+          <ul>
+            <li><a href="https://f5.com" class="internalLink">F5.com</a></li>
+            <li><a href="https://support.f5.com">Support</a></li>
+            <li><a href="https://devcentral.f5.com">Community</a></li>
+            <li><a href="https://github.com/F5Networks">GitHub</a></li>
+            <li><a href="https://f5.com/about-us/careers">Careers</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="row pageHeader">
+      <div class="container stat">
+        <div class="col-xs-12 stat">
+          <a class="internalLink" href="https://f5.com">
+            <img class="logo" src="https://cdn.f5.com/websites/support/assets/images/logo.svg" width="50" height="44" alt="F5 Networks" title="F5 Networks" border="0">
+          </a>
+            <ul id="MainMenu" class="main-menu">
+              <li>
+                <a href="#">Products
+                  <span class="indicator"><span class="arrow-up"></span></span>
+                </a>
+
+                <div class="menu-panel soft-hide" id="ProductsSubmenu">
+                  <div class="container">
+                    <ul class="submenu col-sm-11">
+                      <li class="third"><span class="a-mm-h">Connectors</span>
+                        <ul>
+                          <li><a href="http://clouddocs.f5.com/products/connectors/marathon-bigip-ctlr/latest" data-link-type="Nav: Mega">F5 Marathon BIG-IP Controller</a></li>
+                          <li><a href="http://clouddocs.f5.com/products/connectors/marathon-asp-ctlr/latest" data-link-type="Nav: Mega">F5 Marathon ASP Controller</a></li>
+                          <li><a href="http://clouddocs.f5.com/products/connectors/k8s-bigip-ctlr/latest" data-link-type="Nav: Mega">F5 Kubernetes BIG-IP Controller</a></li>
+                          <li><a href="http://clouddocs.f5.com/products/connectors/f5-kube-proxy/latest" data-link-type="Nav: Mega">F5 Kubernetes Proxy</a></li>
+                        </ul>
+                        <!--span class="seemore"><a data-link-type="Nav: Mega" href="/products/connectors">See all </a></--span-->
+                      </li>
+                      <li class="divider"></li>
+                      <li class="third"><span class="a-mm-h">Application Service Proxy</span>
+                        <ul>
+                          <li><a href="http://clouddocs.f5.com/products/asp/latest" data-link-type="Nav: Mega">F5 Application Service Proxy</a></li>
+                        </ul>
+                        <!--span class="seemore"><a href="/products/">See all </a></span-->
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <a href="#">Container Integrations
+                  <span class="indicator"><span class="arrow-up"></span></span>
+                </a>
+
+                <div class="menu-panel soft-hide" id="ContainersSubmenu">
+                  <div class="container">
+                    <ul class="submenu col-sm-11">
+                      <li class="third"><span class="a-mm-h">Container Integrations</span>
+                        <ul>
+                          <li><a href="http://clouddocs.f5.com/containers/latest/marathon/" data-link-type="Nav: Mega">Mesos Marathon</a></li>
+                          <li><a href="http://clouddocs.f5.com/containers/latest/kubernetes/" data-link-type="Nav: Mega">Kubernetes</a></li>
+                          <li><a href="http://clouddocs.f5.com/containers/latest/openshift/" data-link-type="Nav: Mega">RedHat OpenShift</a></li>
+                        </ul>
+                        <span class="seemore"><a data-link-type="Nav: Mega" href="http://clouddocs.f5.com/containers/latest">View details </a></span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <a href="#">Clouds
+                  <span class="indicator"><span class="arrow-up"></span></span>
+                </a>
+
+                <div class="menu-panel soft-hide" id="CloudsSubmenu">
+                  <div class="container">
+                    <ul class="submenu col-sm-11">
+                      <li class="third"><span class="a-mm-h">Cloud Integrations</span>
+                        <ul>
+                          <li><a href="http://clouddocs.f5.com/cloud/openstack/" data-link-type="Nav: Mega">OpenStack</a></li>
+                        </ul>
+                        <!--span class="seemore"><a data-link-type="Nav: Mega" href="/cloud/">See all </a></span-->
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <a href="#">Resources
+                  <span class="indicator"><span class="arrow-up"></span></span>
+                </a>
+                <div class="menu-panel soft-hide" id="UPCProgramSubmenu">
+                  <div class="container">
+                    <ul class="submenu col-sm-11">
+                      <li class="third">
+                        <span class="a-mm-h">Downloads</span>
+                        <ul>
+                          <li><a target="_blank" data-link-type="Nav: Mega" href="https://hub.docker.com/r/f5networks/" class="internalLink">Docker Hub</a></li>
+                          <li><a target="_blank" data-link-type="Nav: Mega" href="https://store.docker.com/images/f5networks" class="internalLink">Docker Store</a></li>
+                        </ul>
+                      </li>
+                      <li class="divider"></li>
+
+                      <li class="third">
+                        <span class="a-mm-h">OpenSource</span>
+                        <ul>
+                          <li><a target="_blank" data-link-type="Nav: Mega" href="https://github.com/F5Networks" class="internalLink">GitHub</a></li>
+                        </ul>
+                      </li>
+                      <li class="divider"></li>
+
+                      <li class="third">
+                        <a href="//university.f5.com" class="a-mm-h internalLink" target="_blank" data-link-type="Nav: Mega">F5 University</a>
+                        <ul>
+                          <li>
+                            <p>Get up to speed with free self-paced courses</p>
+                          </li>
+                        </ul>
+                        <a data-ng-href="https://devcentral.f5.com" class="a-mm-h internalLink" target="_blank" data-link-type="Nav: Mega" href="https://devcentral.f5.com">DevCentral</a>
+                        <ul>
+                          <li>
+                            <p>Join the community of 250,000+ technical peers</p>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+            </ul>
+        </div>
+      </div>
+    </div>
+  </div> <!-- /container-fluid -->
+</nav>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-3 col-md-3 sidebar">
+         <h4><a href="../../">Introduction to Application Security Manager </a></h4>
+<div id="searchbox" style="display: none" role="search">
+  <form class="search" action="../../search.html" method="get">
+    <div>
+      <input type="text" name="q" placeholder="Search" style="padding-left: 6px;"/>
+      <!-- <input type="submit" value="Go" style="margin-top: 4px;"/> -->
+      <button type="submit" class="btn btn-primary btn-xs">Go</button>
+    </div>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+  <p class="caption">
+   <span class="caption-text">Current Page</span>
+  </p>
+  <ul>
+<li><a class="reference internal" href="#">3.1.1. Initial configuration of the BIG-IP</a></li>
+<li><a class="reference internal" href="#create-an-asm-policy">3.1.2. Create an ASM Policy</a><ul>
+<li><a class="reference internal" href="#objective">3.1.2.1. Objective:</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#creating-application-security-policy">3.1.3. Creating Application Security Policy</a></li>
+<li><a class="reference internal" href="#enable-application-security-logging">3.1.4. Enable Application Security Logging</a></li>
+</ul>
+
+
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">1. Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#accessing-the-ravello-lab-environment">2. Accessing the Ravello lab environment</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../class1.html">3. Class - Introduction to Application Security Manager</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="module1.html">3.1. ASM Policy Creation and Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../module2/module2.html">3.2. Policy Building and Staging</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="module1.html"
+                        title="previous chapter">3.1. ASM Policy Creation and Logging</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../module2/module2.html"
+                        title="next chapter">3.2. Policy Building and Staging</a></p>
+        
+      </div>
+      <div class="col-md-offset-3 col-sm-offset-3 main">
+        <h4>
+          <a href="/">Community Training Classes &amp; Labs</a> &gt; <a href="../../index.html">Introduction to Application Security Manager</a>
+          <span class="right"><a href="../../genindex.html">Index</a></span>
+        </h4>
+        
+  <div class="section" id="initial-configuration-of-the-bip">
+<h1>3.1.1. Initial configuration of the BIG-IP<a class="headerlink" href="#initial-configuration-of-the-bip" title="Permalink to this headline">¶</a></h1>
+<p>Open the Chrome browser and log into the BIG-IP GUI to verify the BIG-IP is up.</p>
+<p>Go to <strong>https://10.1.1.245</strong>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">User</span><span class="p">:</span> <span class="n">admin</span>
+<span class="n">Password</span><span class="p">:</span> <span class="n">admin</span>
+</pre></div>
+</div>
+<p>Now you will perform an initial configuration via command line. Open a terminal window from the taskbar at the bottom of the jumpbox.</p>
+<p>Log in to the BIG-IP using the command:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="n">root</span><span class="nd">@10</span><span class="o">.</span><span class="mf">1.1</span><span class="o">.</span><span class="mi">245</span>
+<span class="n">The</span> <span class="n">password</span> <span class="ow">is</span> <span class="o">**</span><span class="n">default</span><span class="o">.**</span>
+</pre></div>
+</div>
+<p>At the BIG-IP prompt, enter <strong>tmsh</strong>. This will place you in the BIG-IP command line mode. Copy and paste the following TMSH commands into the shell.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="c1">#</span>
+<span class="c1"># Lab Prep for Application Security Manager (ASM) 101- bigip245</span>
+<span class="c1">#</span>
+
+<span class="c1"># BEGIN COPY - Lab prep</span>
+<span class="c1"># Create VLANs</span>
+create net vlan client_vlan interfaces add <span class="o">{</span> <span class="m">1</span>.1 <span class="o">{</span> untagged <span class="o">}</span> <span class="o">}</span>
+create net vlan server_vlan interfaces add <span class="o">{</span> <span class="m">1</span>.2 <span class="o">{</span> untagged <span class="o">}</span> <span class="o">}</span>
+
+<span class="c1"># Create Self IPs</span>
+create net self client_ip address <span class="m">10</span>.1.10.245/24 vlan client_vlan
+create net self server_ip address <span class="m">10</span>.1.20.245/24 vlan server_vlan
+
+<span class="c1"># Create a default route</span>
+create net route def_gw network <span class="m">0</span>.0.0.0/0 gw <span class="m">10</span>.1.10.1
+
+<span class="c1"># Build Pools</span>
+create ltm pool www_pool members add <span class="o">{</span> <span class="m">10</span>.1.20.11:80 <span class="m">10</span>.1.20.12:80 <span class="m">10</span>.1.20.13:80 <span class="o">}</span> monitor http
+create ltm pool hackazon_pool members add <span class="o">{</span> <span class="m">10</span>.1.20.20:80 <span class="o">}</span> monitor http
+
+<span class="c1"># Build Virtual Servers</span>
+
+create ltm virtual vs_hackazon_http destination <span class="m">10</span>.1.10.20:80 pool hackazon_pool ip-protocol tcp source-address-translation <span class="o">{</span> <span class="nb">type</span> automap <span class="o">}</span> profiles add <span class="o">{</span> http <span class="o">}</span>
+create ltm virtual vs_hackazon_https destination <span class="m">10</span>.1.10.20:443 pool hackazon_pool ip-protocol tcp source-address-translation <span class="o">{</span> <span class="nb">type</span> automap <span class="o">}</span> profiles add <span class="o">{</span> http clientssl <span class="o">}</span>
+
+<span class="c1"># Provision ASM</span>
+modify sys provision asm level nominal
+
+<span class="c1"># Archive the initial ASM build</span>
+save sys ucs asm_101_basic_build
+<span class="c1"># END COPY - Lab prep</span>
+</pre></div>
+</div>
+<p>Paste the commands into the terminal window at the <strong>tmsh</strong> prompt.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You can also open the <strong>Lab Guides</strong> link on the bookmarks bar in a new tab/window.  In Open the <strong>ASM 101.txt</strong> file and copy the commands from there.</p>
+</div>
+<dl class="docutils">
+<dt>The BIG-IP will take several minutes to come back online.</dt>
+<dd><ul class="first last simple">
+<li>Good time for a bathroom break. Smoke ‘em if you got ‘em.</li>
+</ul>
+</dd>
+<dt>Verify the virtual server and web site are up and running.</dt>
+<dd><ul class="first last simple">
+<li>Go to <strong>Local Traffic &gt; Network Map</strong>. There should be two virtual servers and all should be available (green).</li>
+<li><dl class="first docutils">
+<dt>Open up the Firefox browser. Go to <a class="reference external" href="http://hackazon.f5demo.com">http://hackazon.f5demo.com</a> and</dt>
+<dd><a class="reference external" href="https://hackazon.f5demo.com">https://hackazon.f5demo.com</a></dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="create-an-asm-policy">
+<h1>3.1.2. Create an ASM Policy<a class="headerlink" href="#create-an-asm-policy" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="objective">
+<h2>3.1.2.1. Objective:<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Create a security policy using automatic policy building</li>
+<li>Enable application security logging profile</li>
+<li>Estimated time for completion: <strong>20 minutes</strong></li>
+</ul>
+<p>This lab will demonstrate how to create and build a security policy
+using automatic policy building.</p>
+<p>Before you begin, the penetration testing tool, OWASP ZAP, has already been run against the website and the results have been saved. Let’s take a look at the test to see the results. You will use this information to plug a few holes.</p>
+<ul class="simple">
+<li>From the Applications Menu in the upper left-hand corner of the jumpbox go to <strong>OWASP &gt; Proxies     ZAP</strong>.</li>
+<li>Once ZAP is open, click on <strong>Start</strong> when asked “Do you want to persist the ZAP session?”.</li>
+<li>Under <strong>File</strong> select <strong>Open Session</strong> and select <strong>hackazon-zap-session.session.</strong><ul>
+<li>Once the session is loaded, go to the <strong>Alerts</strong> tab, you will see a number of vulnerabilities found.</li>
+</ul>
+</li>
+</ul>
+<img alt="../../_images/image5.png" src="../../_images/image5.png" />
+<p>We will be focusing on the CrossSite Scripting (XSS) and SQL Injection vulnerabilities discovered specifically, on the Search page and User Login page.</p>
+<ul class="simple">
+<li>If you expand the tabs you can see the vulnerabilities found. Click on the page to get more detail.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="creating-application-security-policy">
+<h1>3.1.3. Creating Application Security Policy<a class="headerlink" href="#creating-application-security-policy" title="Permalink to this headline">¶</a></h1>
+<p>On the Main tab, click <strong>Security</strong> &gt; <strong>Application Security</strong> &gt; <strong>Security Policies</strong>.
+The Active Policies screen opens.</p>
+<p>Click the <strong>Create</strong> button. The Deployment wizard opens to the <strong>Select Local Traffic Deployment Scenario</strong> screen.</p>
+<ul class="simple">
+<li>Select the <strong>Existing Virtual Server</strong> button and hit <strong>Next</strong></li>
+</ul>
+<img alt="../../_images/image6.png" src="../../_images/image6.png" />
+<ul class="simple">
+<li>Select <strong>HTTP</strong> for the protocol and <strong>vs_hackazon_http</strong> as the HTTP Virtual Server and hit <strong>Next</strong>.</li>
+</ul>
+<img alt="../../_images/image8.png" src="../../_images/image8.png" />
+<ul class="simple">
+<li>Name the security policy <strong>hackazon_asm</strong> and select <strong>Unicode (utf-8)</strong> for the application language and <em>de-select</em> all other options; select <strong>NEXT</strong></li>
+</ul>
+<img alt="../../_images/image9.png" src="../../_images/image9.png" />
+<ul class="simple">
+<li>In the Configure Attack Signatures section, move <strong>Unix/Linux</strong>, <strong>Apache,</strong> <strong>PHP</strong>, and <strong>MySQL</strong> from the Available Systems column to the Assigned Systems column. Notice that there are pre-defined attack signatures associated with this security policy, and select <strong>NEXT</strong></li>
+</ul>
+<img alt="../../_images/image10.png" src="../../_images/image10.png" />
+<ul class="simple">
+<li>Select <strong>Comprehensive</strong> policy type and change the learning speed to <strong>Fast</strong>. In the Trusted IP Addresses section, add the <strong>10.1.10.0</strong> network address (with netmask 255.255.255.0), click <strong>Add</strong>. Leave the remaining fields with their default settings and select <strong>NEXT</strong></li>
+</ul>
+<img alt="../../_images/image11.png" src="../../_images/image11.png" />
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>Review the Security Policy Configuration Summary and click <strong>Finish</strong>.</dt>
+<dd><ul class="first last">
+<li>There may be a 2 to 3 minute delay while the policy is initializing.</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<img alt="../../_images/image12.png" src="../../_images/image12.png" />
+<ul class="simple">
+<li>At the <strong>Security Policy Properties</strong> page, select <strong>Save</strong> and then the <strong>Apply Policy</strong> button.</li>
+</ul>
+<img alt="../../_images/image13.png" src="../../_images/image13.png" />
+</div>
+<div class="section" id="enable-application-security-logging">
+<h1>3.1.4. Enable Application Security Logging<a class="headerlink" href="#enable-application-security-logging" title="Permalink to this headline">¶</a></h1>
+<p>In the Configuration Utility, open the <strong>Security &gt; Event Logs: Logging Profiles</strong> then click <strong>Create.</strong></p>
+<ul class="simple">
+<li>Enter a Profile Name <strong>asm_allrequests</strong>, select the checkbox for <strong>Application Security,</strong> change the <strong>Configuration</strong> dropdown to <strong>Advanced</strong>, and then set the <strong>Response Logging</strong> dropdown to <strong>For All Requests.</strong> Change the <strong>Request Type</strong> under storage filter to <strong>All Requests.</strong> Click <strong>Finished.</strong></li>
+</ul>
+<img alt="../../_images/image14.png" src="../../_images/image14.png" />
+<p>In the Configuration Utility, open the <strong>Local Traffic &gt; Virtual Servers.</strong> Select <strong>vs_hackazon_http</strong> and click the <strong>Security &gt; Policies.</strong></p>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>Change the <strong>Log Profile</strong> option to <strong>Enabled</strong> and then move the <strong>asm_allrequests</strong> from Available to Selected and click <strong>Update</strong>.</dt>
+<dd><ul class="first last">
+<li>Note that the Application Security Policy has already been applied per the wizard.</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<img alt="../../_images/image15.png" src="../../_images/image15.png" />
+<p>Generate trusted learning suggestions by browsing the Auction site via the protected virtual server.</p>
+<ul class="simple">
+<li>Use the <strong>Firefox</strong> browser to access <strong>http://hackazon.f5demo.com</strong></li>
+<li>Select <strong>Sign In</strong> in the upper right corner and attempt to login to the site using guessed credentials of <strong>student/student</strong> and submit them with the <strong>Sign In</strong> button.</li>
+</ul>
+<img alt="../../_images/image16.png" src="../../_images/image16.png" />
+<p>In the Configuration Utility, open the <strong>Security &gt; Application Security &gt; Policy &gt; Audit &gt; Log</strong> page and you’ll notice that as a result of interaction with the web site, Elements are being added to the Policy by the Policy Builder as the ASM is learns the application.</p>
+<ul class="simple">
+<li>Click the <strong>Apply Policy</strong> button if <strong>Changes have not been applied yet</strong> is displayed.</li>
+</ul>
+<img alt="../../_images/image17.png" src="../../_images/image17.png" />
+<ul class="simple">
+<li>Return to the Hackazon site, select <strong>Sign In</strong> and re-attempt a login to the site using <strong>student1234567890/student1234567890</strong>.</li>
+<li>Return to the <strong>Security &gt; Application Security &gt; Policy &gt; Audit &gt; Log</strong> page in the F5 Configuration Utility and notice that further updates have been made to the Policy. Click the**Apply Policy** button if <strong>Changes have not been applied yet</strong> is displayed</li>
+</ul>
+<img alt="../../_images/image18.png" src="../../_images/image18.png" />
+<ul class="simple">
+<li>Return to the Hackazon site one more time, select <strong>Sign In</strong> and re-attempt a login to the site using an email address as the username (i.e. <a class="reference external" href="mailto:student&#37;&#52;&#48;example&#46;com">student<span>&#64;</span>example<span>&#46;</span>com</a>) and any password.</li>
+<li>Return to the <strong>Policy Audit Log</strong> (step c above) and notice that updates were made to the <strong>username</strong> Parameter element to allow the <strong>&#64;</strong> sign. Click the <strong>Apply Policy</strong> button if <strong>Changes have not been applied yet</strong> is displayed</li>
+</ul>
+<p>The login form has now been “learned” by the Policy Builder and added to the policy.</p>
+<p>In the Configuration Utility, open the <strong>Security &gt; Application Security &gt; Policy Building &gt; Enforcement Readiness</strong> page. You will see that several elements were discovered. Click through each of the numbers to see which elements were found.</p>
+<img alt="../../_images/image19.png" src="../../_images/image19.png" />
+<ul class="simple">
+<li>Open <strong>Security &gt; Event Logs &gt; Application &gt; Requests.</strong> Under <strong>Requests Lists</strong> select <strong>All Requests</strong> from the drop down. You should see log entries with recent timestamps.</li>
+</ul>
+<img alt="../../_images/image20.png" src="../../_images/image20.png" />
+<p>In the Configuration Utility, open the <strong>Security &gt; Application Security &gt; Policy Building &gt; Learning and Blocking Settings</strong>.</p>
+<ul class="simple">
+<li>Make sure the <strong>Advanced</strong> view option is selected.</li>
+</ul>
+<img alt="../../_images/image21.png" src="../../_images/image21.png" />
+<p>You are now finished building the policy for this exercise and youneed to remove the client network from the trusted IP addresses so that you can attempt to attack the Auction Website from your client PC.
+- From the Policy Building Process section expand the <strong>Trusted IP Addresses</strong> section and remove the 10.1.10.0/24 entry from the Trusted IP Addresses, and click <strong>Save.</strong></p>
+<img alt="../../_images/image22.png" src="../../_images/image22.png" />
+<p>At the top of the page, click the <strong>Apply Policy</strong> button to apply your changes.</p>
+<img alt="../../_images/image23.png" src="../../_images/image23.png" />
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Make sure your <strong>Trusted IP Addresses</strong> are empty or it will impact the next lab.</p>
+</div>
+</div>
+
+
+        
+		     <div class="row next-prev-btn-row">
+           <div class="col-lg-12">
+           
+		        <a href="module1.html" title="3.1. ASM Policy Creation and Logging" accesskey="p" class="btn btn-primary pull-left"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Previous</a>
+           
+           
+              <a href="../module2/module2.html" title="3.2. Policy Building and Staging" accesskey="n" class="btn btn-primary pull-right">Next <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a>
+           
+		     </div>
+         </div>
+        
+      </div>
+    </div>
+  </div>
+
+
+  <footer>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="content-fluid pre-footer">
+            <div class="blocks-container">
+              <div class="block">
+                <h3>Support Programs</h3>
+                <p>Regionally located support centers enable F5 to provide support in a number of languages through native-speaking support engineers.</p>
+                <a class="btn internalLink" data-ng-href="https://f5.com/support/support-offerings" target="_blank" href="https://f5.com/support/support-offerings">See more
+                  <span class="icon-1x-right icon-new-window" data-icon="new-window">​</span>
+                </a>
+              </div>
+              <div class="block">
+                <h3>Contact Support</h3>
+                <p>
+                  North America: 1-888-882-7535<br>
+                  Outside North America: 800-11-275-435
+                </p>
+                <a class="btn internalLink" data-ng-href="https://f5.com/about-us/contact#regional-support" target="_blank" href="https://f5.com/about-us/contact#regional-support">Local Support Numbers
+                  <span class="icon-1x-right icon-new-window" data-icon="new-window">​</span>
+                </a>
+              </div>
+              <div class="block">
+                <h3>Feedback and Help</h3>
+                <p>Have questions, suggestions, or just want to get something off your chest? Let us know.</p>
+                <a class="btn" data-ui-sref="siteFeedback" target="_blank" href="https://support.f5.com/csp/siteFeedback">Leave feedback</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="footer">
+            <div class="container">
+              <div class="col-sm-3 col-md-2">
+                <h4>About F5</h4>
+                <ul>
+                  <li><a data-ng-href="https://f5.com/about-us/contact" target="_blank" data-link-type="footer" href="https://f5.com/about-us/contact" class="internalLink">Contact F5</a>
+                  </li>
+                  <li><a data-ng-href="https://f5.com/about-us/careers" target="_blank" data-link-type="footer" href="https://f5.com/about-us/careers" class="internalLink">Careers</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-sm-3 col-md-2">
+                <h4>Education</h4>
+                <ul>
+                  <li><a data-ng-href="https://f5.com/education/training" target="_blank" data-link-type="footer" href="https://f5.com/education/training" class="internalLink">Training</a>
+                  </li>
+                  <li><a data-ng-href="https://f5.com/education/certification" target="_blank" data-link-type="footer" href="https://f5.com/education/certification" class="internalLink">Certification</a>
+                  </li>
+                  <li><a data-ng-href="https://f5.com/education/training/free-courses" target="_blank" data-link-type="footer" href="https://f5.com/education/training/free-courses" class="internalLink">Free Online Training</a>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="col-sm-3 col-md-2">
+                <h4>F5 sites</h4>
+                <ul>
+                <li><a data-ng-href="https://f5.com" target="_blank" data-link-type="footer" href="https://f5.com" class="internalLink">F5.com</a>
+                </li>
+                <li><a data-ng-href="https://devcentral.f5.com" target="_blank" data-link-type="footer" href="https://devcentral.f5.com" class="internalLink">Community</a>
+                </li>
+                <li><a data-ng-href="https://partners.f5.com" target="_blank" data-link-type="footer" href="https://partners.f5.com" class="internalLink">Partners</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="col-sm-3 col-md-2">
+            <h4>Support Tasks</h4>
+            <ul>
+                <li><a data-ui-sref="mySupport.createServiceRequest" data-link-type="footer" href="https://support.f5.com/csp/my-support/service-request">Create Service Request </a>
+                </li>
+                <li><a data-ng-href="https://f5.com/about-us/contact#regional-support" target="_blank" data-link-type="footer" href="https://f5.com/about-us/contact#regional-support" class="internalLink">Contact Support</a>
+                </li>
+                <li><a data-ui-sref="siteFeedback" target="_blank" data-link-type="footer" href="https://support.f5.com/csp/siteFeedback">Leave feedback [+]</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="col-xs-12 col-md-3 right">
+            <h4>Connect with us</h4>
+            <ul class="social_icons">
+                <li><a href="//twitter.com/f5networks" target="_blank" data-name="twitter" data-type="" data-prefix="social" data-utf="E032" title="Twitter" class="externalLink"><i class="icon-1x icon-twitter icon-inverse-circle" data-link-type="footer"></i></a></li>
+                <li><a href="//www.linkedin.com/companies/f5-networks" target="_blank" class="linkedin externalLink" title="LinkedIn"><i class="icon-1x icon-linkedin icon-inverse-circle" data-link-type="footer"></i></a></li>
+                <li><a href="//www.facebook.com/f5networksinc" target="_blank" class="facebook externalLink" title="Facebook"><i class="icon-1x icon-facebook icon-inverse-circle" data-link-type="footer"></i></a></li>
+                <li><a href="//www.youtube.com/f5networksinc" target="_blank" class="youtube externalLink" title="YouTube"><i class="icon-1x icon-youtube icon-inverse-circle" data-link-type="footer"></i></a></li>
+                <li><a data-ng-href="https://devcentral.f5.com" target="_blank" class="devcentral internalLink" title="DevCentral" href="https://devcentral.f5.com"><i class="icon-1x icon-dc-pos icon-inverse-circle" data-link-type="footer"></i></a></li>
+            </ul>
+        </div>
+
+        <div class="content-fluid left">
+            <div class="col-xs-12">
+                <p>
+                    © Copyright <span class="ng-binding">2017</span> by F5 Networks, Inc. |
+                    <a data-ng-href="https://f5.com/about-us/policies" target="_blank" data-link-type="footer" href="https://f5.com/about-us/policies" class="internalLink">Policies</a> |
+                    <a data-ng-href="https://f5.com/about-us/policies/trademarks" target="_blank" data-link-type="footer" href="https://f5.com/about-us/policies/trademarks" class="internalLink">Trademarks</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+</div>
+</footer>
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="../../_static/js/bootstrap.min.js"></script>
+  <script type="text/javascript">
+    jQuery.noConflict(true)
+  </script>
+  </body>
+</html>
