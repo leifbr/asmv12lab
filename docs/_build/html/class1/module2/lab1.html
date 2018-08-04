@@ -28,6 +28,7 @@
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3.3. Module – Mitigating L&amp; DDoS Attacks" href="../module3/module3.html" />
     <link rel="prev" title="3.2. Policy Building and Staging" href="module2.html" />
 <!--
 # Copyright 2017 F5 Networks
@@ -224,6 +225,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../class1.html">3. Class - Introduction to Application Security Manager</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../module1/module1.html">3.1. ASM Policy Creation and Logging</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="module2.html">3.2. Policy Building and Staging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../module3/module3.html">3.3. Module –  Mitigating L&amp; DDoS Attacks</a></li>
 </ul>
 </li>
 </ul>
@@ -231,6 +233,9 @@
   <h4>Previous topic</h4>
   <p class="topless"><a href="module2.html"
                         title="previous chapter">3.2. Policy Building and Staging</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../module3/module3.html"
+                        title="next chapter">3.3. Module –  Mitigating L&amp; DDoS Attacks</a></p>
         
       </div>
       <div class="col-md-offset-3 col-sm-offset-3 main">
@@ -272,71 +277,46 @@ going to plug that hole.</p>
 <p class="last">The attack uses URL encoding in the XSS attack script as an evasion technique.</p>
 </div>
 <ul class="simple">
-<li>Open the Firefox browser and access**http://hackazon.f5demo.com** virtual server.</li>
+<li>Open the Firefox browser and access <strong>http://hackazon.f5demo.com</strong> virtual server.</li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">In private/incognito mode is recommended for testing.</p>
 </div>
-<ol class="arabic simple" start="2">
-<li>Paste in he URL above or copy and paste the URL from the OWASP ZAP
-alert. You should the a pop-up indicating the attack was successful.</li>
-<li>In the Configuration Utility, open the <strong>Security &gt; Event
-Logs &gt; Application &gt; Requests.</strong> Click on the entry that contains
-<strong>*[HTTP] /search*</strong></li>
-</ol>
+<ul class="simple">
+<li>Paste in the URL above or copy and paste the URL from the OWASP ZAP alert. You should get a pop-up. This indicates the attack was successful.</li>
+<li>In the Configuration Utility, open the <strong>Security &gt; Event Logs &gt; Application &gt; Requests.</strong> Click on the entry that contains <strong>[HTTP] /search</strong></li>
+</ul>
 <img alt="../../_images/image28.png" src="../../_images/image28.png" />
-<blockquote>
-<div>You should see the Attack signature detected violation. Click on the
-violation and you will notice several signatures will detected.</div></blockquote>
+<p>You should see the Attack signature detected violation. Click on the violation and you will notice several signatures will detected.</p>
 <img alt="../../_images/image29.png" src="../../_images/image29.png" />
 </div>
 <div class="section" id="signature-staging">
 <h1>3.2.1.3. Signature Staging<a class="headerlink" href="#signature-staging" title="Permalink to this headline">¶</a></h1>
-<ol class="arabic simple">
-<li>In the Configuration Utility, open the <strong>Security &gt; Application
-Security &gt; Policy Building &gt; Learning and Blocking Settings.</strong> Under
-the <strong>Policy Building Settings</strong> section, expand the <strong>Attack
-Signatures</strong> section<strong>.</strong> Uncheck <strong>Enable Signature Staging</strong> and
-click <strong>Save</strong> and <strong>Apply Policy</strong>.</li>
-</ol>
+<ul class="simple">
+<li>In the Configuration Utility, open the <strong>Security &gt; Application Security &gt; Policy Building &gt; Learning and Blocking Settings.</strong> Under Signatures** section<strong>.</strong> Uncheck <strong>Enable Signature Staging</strong> and click <strong>Save</strong> and <strong>Apply Policy</strong>.</li>
+</ul>
 <img alt="../../_images/image30.png" src="../../_images/image30.png" />
-<ol class="arabic simple" start="2">
-<li>Open a new browser window to the auction site and repeat the SQL
-Injection attack (<strong>ZAP’ AND ‘1’=‘1’</strong>) in the Username field of the
-login form). You will notice that the attack does not get blocked,
-however; the attack signature is still detected in the Event Log. The
-reason for this is that the username parameter is also in staging.
-Open <strong>Security &gt; Application Security &gt; Parameters &gt; Parameters List</strong>.
-You will see that the username parameter is in staging and also has
-learning suggestions:</li>
-</ol>
+<ul class="simple">
+<li>Open a new browser window to the auction site and repeat the SQL Injection attack (<strong>ZAP’ AND ‘1’=‘1’</strong>) in the Username field of the login form). You will notice that the attack does not get blocked, however; the attack signature is still detected in the Event Log. The reason for this is that the username parameter is also in staging.</li>
+<li>Open <strong>Security &gt; Application Security &gt; Parameters &gt; Parameters List</strong>. You will see that the username parameter is in staging and also has learning suggestions:</li>
+</ul>
 <img alt="../../_images/image31.png" src="../../_images/image31.png" />
-<ol class="arabic simple" start="3">
-<li>Click on <strong>username</strong> and uncheck the box for <strong>Perform Staging</strong> and
-click <strong>Update</strong>, then <strong>Apply Policy</strong>.</li>
-</ol>
+<ul class="simple">
+<li>Click on <strong>username</strong> and uncheck the box for <strong>Perform Staging</strong> and click <strong>Update</strong>, then <strong>Apply Policy</strong>.</li>
+</ul>
 <img alt="../../_images/image32.png" src="../../_images/image32.png" />
-<ol class="arabic simple" start="4">
-<li>Repeat the SQL injection you and you should now see the blocking
-page.</li>
-</ol>
+<ul class="simple">
+<li>Repeat the SQL injection you and you should now see the blocking page.</li>
+</ul>
 <img alt="../../_images/image33.png" src="../../_images/image33.png" />
-<ol class="arabic simple" start="5">
-<li>Copy the support ID from the ASM Blocking Page. In the Configuration
-Utility, open the <strong>Security &gt; Event Logs &gt; Application &gt; Requests</strong> and
-click the <strong>Show Filter Details</strong>. Scroll down to the <strong>Support ID</strong>
-section and paste the <strong>Support ID</strong> in the empty field then click
-<strong>Go</strong>. This should bring up the log entry for the most recent SQL
-injection that was just blocked. Review the entry and clear the
-filter.</li>
-</ol>
+<ul class="simple">
+<li>Copy the support ID from the ASM Blocking Page. In the Configuration Utility, open the <strong>Security &gt; Event Logs &gt; Application &gt; Requests</strong> and click the <strong>Show Filter Details</strong>. Scroll down to the <strong>Support ID</strong> section and paste the <strong>Support ID</strong> in the empty field then click <strong>Go</strong>. This should bring up the log entry for the most recent SQL injection that was just blocked. Review the entry and clear the filter.</li>
+</ul>
 <img alt="../../_images/image34.png" src="../../_images/image34.png" />
-<ol class="arabic simple" start="6">
-<li>Repeat the forceful browsing attack. What are the results? Think
-about why further policy changes weren’t required as they were for a
-SQL Injection</li>
-</ol>
+<ul class="simple">
+<li>Repeat the forceful browsing attack. What are the results? Think about why further policy changes weren’t required as they were for a SQL Injection</li>
+</ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This completes the ASM 101 ASM Fundamentals Lab Section</p>
@@ -350,6 +330,8 @@ SQL Injection</li>
            
 		        <a href="module2.html" title="3.2. Policy Building and Staging" accesskey="p" class="btn btn-primary pull-left"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Previous</a>
            
+           
+              <a href="../module3/module3.html" title="3.3. Module – Mitigating L&amp; DDoS Attacks" accesskey="n" class="btn btn-primary pull-right">Next <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a>
            
 		     </div>
          </div>
